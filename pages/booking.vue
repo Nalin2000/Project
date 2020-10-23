@@ -100,7 +100,7 @@ export default {
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
       const data = {
         // eslint-disable-next-line no-undef
-        index: this.list.indexOf((x) => x.id === id),
+        index: this.list.indexOf((x) => x.No === No),
         list: this.list.splice(this.index, 1),
       }
       db.collection('checkin')

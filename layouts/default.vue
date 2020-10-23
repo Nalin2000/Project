@@ -44,7 +44,9 @@
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
+      <v-btn color="#CFD8DC" @click="logout()">Log out</v-btn>
     </v-app-bar>
     <v-main class="lightblue">
       <nuxt />
@@ -56,15 +58,11 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
 export default {
   data() {
     return {
-      // login
-      // authenticated: false,
-      // mockAccount: {
-      //   username: '0000',
-      //   password: '0000',
-      // },
+      login: true,
       clipped: true,
       drawer: true,
       fixed: true,
@@ -72,7 +70,7 @@ export default {
         {
           icon: 'mdi-book',
           title: 'การจอง',
-          to: '/',
+          to: '/form',
         },
         // {
         //   icon: 'mdi-view-list',
@@ -96,24 +94,35 @@ export default {
         },
       ],
       miniVariant: false,
-      right: true,
+      right: false,
       rightDrawer: false,
       title: 'LYNN HOTEL',
     }
   },
-  // login
-  // mounted() {
-  //   if (!this.authenticated) {
-  //     this.$router.replace({ name: 'login' })
-  //   }
-  // },
-  // methods: {
-  //   setAuthenticated(status) {
-  //     this.authenticated = status
-  //   },
-  //   logout() {
-  //     this.authenticated = false
-  //   },
-  // },
+  beforeCreate() {
+    if (!firebase.auth().currentUser) {
+      console.log('No Login')
+      this.$router.replace('/login')
+    } else {
+      console.log('Login ok')
+    }
+  },
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          // Sign-out successful.
+          console.log('Signout')
+          this.$router.replace('/')
+        })
+        // eslint-disable-next-line handle-callback-err
+        .catch((error) => {
+          console.log('An error happened.')
+          // An error happened.
+        })
+    },
+  },
 }
 </script>
