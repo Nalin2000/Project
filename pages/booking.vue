@@ -18,8 +18,8 @@
         :items="list"
         :items-per-page="5"
         class="elevation-3"
-        ><template v-slot:item.actions
-          ><v-btn color="#FFF176" @click="set()">Checkin</v-btn>
+        ><template v-slot:item.actions="{ item }"
+          ><v-btn color="#FFF176" @click="set(item)">Checkin</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -33,6 +33,7 @@ export default {
     return {
       search: '',
       list: [],
+      editedIndex: -1,
       headers: [
         {
           text: 'เลขห้อง',
@@ -96,13 +97,16 @@ export default {
           this.list = data
         })
     },
-    set() {
+    set(item) {
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
       const data = {
         // eslint-disable-next-line no-undef
-        index: this.list.indexOf((x) => x.No === No),
-        list: this.list.splice(this.index, 1),
+        editedIndex: this.list.indexOf(item),
+        list: this.list.splice(this.editedIndex, 1),
+        // index: this.list.indexOf((x) => x.No === this.list.No),
+        // list: this.list.splice(this.index, 1),
       }
+      console.log('index:' + this.data)
       db.collection('checkin')
         .doc()
         .set(data)

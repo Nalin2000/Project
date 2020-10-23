@@ -5,14 +5,10 @@
     <v-row
       ><v-col v-for="i in list" :key="i" cols="3"
         ><nuxt-link :to="{ name: 'jong-form', params: { id: i } }">
-          <v-card class="btn-room gray text-center"
+          <v-card class="btn-room text-center" :color="state(i.state)"
             ><div v-if="i.roomNo == i.roomNo">
               ROOM {{ i.roomNo }} <br />{{ i.state[0] }}
-            </div>
-            <!--
-            <div v-else-if="i.roomNo === 1">
-              ROOM {{ i.roomNo }} <br />{{ i.state[0] }}
-            </div>--></v-card
+            </div></v-card
           ></nuxt-link
         >
       </v-col></v-row
@@ -29,18 +25,13 @@ export default {
   data() {
     return { list: [] }
   },
-  // beforeCreate() {
-  //   if (!firebase.auth().currentUser) {
-  //     console.log('No Login')
-  //     this.$router.replace('/login')
-  //   } else {
-  //     console.log('Login ok')
-  //   }
-  // },
   mounted() {
     this.getdata()
   },
   methods: {
+    state(state) {
+      if (state === state[0]) return '#81C784'
+    },
     getdata() {
       db.collection('room')
         .orderBy('roomNo', 'asc')

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container class="ml-9 mt-3"
-      ><h2>หมายเลขห้อง{{ id }}</h2>
+      ><h2>หมายเลขห้อง {{ id }}</h2>
     </v-container>
 
     <v-card

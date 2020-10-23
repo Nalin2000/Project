@@ -46,7 +46,7 @@
       </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
-      <v-btn color="#CFD8DC" @click="logout()">Log out</v-btn>
+      <v-btn class="red--text" color="#CFD8DC" @click="logout()">Log out</v-btn>
     </v-app-bar>
     <v-main class="lightblue">
       <nuxt />
@@ -102,7 +102,7 @@ export default {
   beforeCreate() {
     if (!firebase.auth().currentUser) {
       console.log('No Login')
-      this.$router.replace('/login')
+      this.$router.replace('/')
     } else {
       console.log('Login ok')
     }
