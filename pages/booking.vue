@@ -18,7 +18,8 @@
         :items="list"
         :items-per-page="5"
         class="elevation-3"
-        ><template v-slot:item.actions="{ item }"
+      >
+        <template v-slot:item.actions="{ item }"
           ><v-btn color="#FFF176" @click="set(item)">Checkin</v-btn>
         </template>
       </v-data-table>
@@ -32,8 +33,8 @@ export default {
   data() {
     return {
       search: '',
+      // state: 'checkin',
       list: [],
-      editedIndex: -1,
       headers: [
         {
           text: 'เลขห้อง',
@@ -79,7 +80,28 @@ export default {
           sortable: false,
         },
       ],
+      id: '',
+      editedIndex: -1,
+      editedItem: {
+        roomNo: '',
+        name: '',
+        email: '',
+        costumers: 0,
+        phone: '',
+        cost: 0,
+        address: '',
+        date_in: '',
+        date_out: '',
+        state: 'check in',
+      },
     }
+  },
+  computed: {
+    edit: {
+      get() {
+        return this.editedItem
+      },
+    },
   },
   mounted() {
     this.getdata()
@@ -95,26 +117,39 @@ export default {
             console.log(data.toString)
           })
           this.list = data
+          console.log('List = ' + this.list)
         })
     },
     set(item) {
+      this.editedIndex = this.list.indexOf(item)
+      this.editedItem = Object.assign({}, item)
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
-      const data = {
-        // eslint-disable-next-line no-undef
-        editedIndex: this.list.indexOf(item),
-        list: this.list.splice(this.editedIndex, 1),
-        // index: this.list.indexOf((x) => x.No === this.list.No),
-        // list: this.list.splice(this.index, 1),
+      if (this.editedIndex > -1) {
+        this.id = this.list[this.editedIndex].No
+        console.log('id: ' + this.id)
+        Object.assign(this.list[this.editedIndex], this.editedItem)
+        this.arr = this.list[this.editedIndex]
+      } else {
+        this.list.push(this.editedItem)
       }
-      console.log('index:' + this.data)
       db.collection('checkin')
-        .doc()
-        .set(data)
-        .then(function () {
-          console.log('checkin')
-        })
-        .catch(function (error) {
-          console.error('Error writing document: ', error)
+        .doc(this.id)
+        .get()
+        .then((doc) => {
+          const id = this.id
+          const obj = this.arr
+          console.log('di = ' + id)
+          console.log('Arr = ' + obj)
+          db.collection('checkin')
+            .doc(id)
+            .set(obj)
+            .then(function () {
+              db.collection('data').doc(id).delete()
+            })
+          const update = db.collection('room').doc(id)
+          return update.update({ state: 'check in' }).then(function () {
+            console.log('Update!' + id)
+          })
         })
     },
   },

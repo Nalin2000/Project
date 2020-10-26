@@ -70,7 +70,7 @@ export default {
         {
           icon: 'mdi-book',
           title: 'การจอง',
-          to: '/form',
+          to: '/room',
         },
         // {
         //   icon: 'mdi-view-list',

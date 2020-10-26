@@ -85,7 +85,7 @@ export default {
           console.log('token : ' + token)
           console.log('user : ' + user)
           console.log('login successful!')
-          this.$router.replace('/form')
+          this.$router.replace('/room')
         })
         .catch((error) => {
           // Handle Errors here.

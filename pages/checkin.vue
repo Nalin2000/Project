@@ -18,8 +18,8 @@
         :items="list"
         :items-per-page="5"
         class="elevation-3"
-        ><template v-slot:item.actions
-          ><v-btn color="#E57373" @click="set()">Checkout</v-btn>
+        ><template v-slot:item.actions="{ item }"
+          ><v-btn color="#E57373" @click="set(item)">Checkout</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -38,35 +38,35 @@ export default {
           text: 'เลขห้อง',
           align: 'start',
           sortable: false,
-          value: 'list[0].No',
+          value: 'No',
         },
         {
           text: 'ชื่อผู้จอง',
-          value: 'list[0].name',
+          value: 'name',
         },
         {
           text: 'E-mail',
-          value: 'list[0].email',
+          value: 'email',
         },
         {
           text: 'เบอร์โทร',
-          value: 'list[0].phone',
+          value: 'phone',
         },
         {
           text: 'ที่อยู่',
-          value: 'list[0].address',
+          value: 'address',
         },
         {
           text: 'จำนวนคน',
-          value: 'list[0].costumers',
+          value: 'costumers',
         },
         {
           text: 'จองวันที่',
-          value: 'list[0].date_in',
+          value: 'date_in',
         },
         {
           text: 'ถึงวันที่',
-          value: 'list[0].date_out',
+          value: 'date_out',
         },
         {
           text: '',
@@ -74,7 +74,27 @@ export default {
           sortable: false,
         },
       ],
+      id: '',
+      editedIndex: -1,
+      editedItem: {
+        roomNo: '',
+        name: '',
+        email: '',
+        costumers: 0,
+        phone: '',
+        cost: 0,
+        address: '',
+        date_in: '',
+        date_out: '',
+      },
     }
+  },
+  computed: {
+    edit: {
+      get() {
+        return this.editedItem
+      },
+    },
   },
   mounted() {
     this.getdata()
@@ -90,21 +110,36 @@ export default {
         this.list = data
       })
     },
-    set() {
+    set(item) {
+      this.editedIndex = this.list.indexOf(item)
+      this.editedItem = Object.assign({}, item)
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
-      const data = {
-        // eslint-disable-next-line no-undef
-        index: this.list.indexOf((x) => x.id === id),
-        list: this.list.splice(this.index, 1),
+      if (this.editedIndex > -1) {
+        this.id = this.list[this.editedIndex].No
+        console.log('id: ' + this.id)
+        Object.assign(this.list[this.editedIndex], this.editedItem)
+        this.arr = this.list[this.editedIndex]
+      } else {
+        this.list.push(this.editedItem)
       }
       db.collection('checkout')
-        .doc()
-        .set(data)
-        .then(function () {
-          console.log('checkout')
-        })
-        .catch(function (error) {
-          console.error('Error writing document: ', error)
+        .doc(this.id)
+        .get()
+        .then((doc) => {
+          const id = this.id
+          const obj = this.arr
+          console.log('di = ' + id)
+          console.log('Arr = ' + obj)
+          db.collection('checkout')
+            .doc(id)
+            .set(obj)
+            .then(function () {
+              db.collection('checkin').doc(id).delete()
+            })
+          const update = db.collection('room').doc(id)
+          return update.update({ state: 'available' }).then(function () {
+            console.log('Update!' + id)
+          })
         })
     },
   },

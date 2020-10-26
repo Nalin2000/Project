@@ -210,7 +210,7 @@
                     <v-btn
                       color="primary"
                       text
-                      @click=";(dialog = false), set(), reset()"
+                      @click=";(dialog = false), set(), reset(), update(id)"
                     >
                       ตกลง
                     </v-btn>
@@ -238,7 +238,7 @@ export default {
       add: '',
       Address: {},
       email: '',
-      costumers: '',
+      costumers: 0,
       kon: [1, 2],
       arr: {},
       description: '',
@@ -249,7 +249,7 @@ export default {
       sub_district: '',
       district: '',
       cost: this.$route.params.id.cost,
-      state: 'checkin',
+      // state: 'wait check in',
       province: '',
       dialog: false,
       nameRules: [(v) => !!v || 'please required'],
@@ -261,6 +261,9 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.$router.replace('/room')
+    },
     validate() {
       this.$refs.form.validate()
     },
@@ -273,7 +276,6 @@ export default {
         costumers: this.costumers,
         phone: this.phone,
         cost: this.cost,
-        state: this.state,
         address:
           this.add +
           ' ต.' +
@@ -285,19 +287,24 @@ export default {
 
         date_in: this.datein,
         date_out: this.dateout,
+        state: 'wait check in',
       }
       db.collection('data')
-        .doc()
+        .doc(this.id)
         .set(data)
-        .then(function () {
+        .then(() => {
           console.log('Document successfully written! -> data')
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.error('Error writing document: ', error)
         })
     },
-    reset() {
-      this.$refs.form.reset()
+    // รอการเช็คอิน
+    update(id) {
+      const update = db.collection('room').doc(id)
+      return update.update({ state: 'wait check in' }).then(function () {
+        console.log('Update!' + id)
+      })
     },
   },
 }

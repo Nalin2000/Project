@@ -36,40 +36,35 @@ export default {
           text: 'เลขห้อง',
           align: 'start',
           sortable: false,
-          value: 'list[0].list[0].No',
+          value: 'No',
         },
         {
           text: 'ชื่อผู้จอง',
-          value: 'list[0].list[0].name',
+          value: 'name',
         },
         {
           text: 'E-mail',
-          value: 'list[0].list[0].email',
+          value: 'email',
         },
         {
           text: 'เบอร์โทร',
-          value: 'list[0].list[0].phone',
+          value: 'phone',
         },
         {
           text: 'ที่อยู่',
-          value: 'list[0].list[0].address',
+          value: 'address',
         },
         {
           text: 'จำนวนคน',
-          value: 'list[0].list[0].costumers',
+          value: 'costumers',
         },
         {
           text: 'จองวันที่',
-          value: 'list[0].list[0].date_in',
+          value: 'date_in',
         },
         {
           text: 'ถึงวันที่',
-          value: 'list[0].list[0].date_out',
-        },
-        {
-          text: '',
-          value: 'actions',
-          sortable: false,
+          value: 'date_out',
         },
       ],
     }
