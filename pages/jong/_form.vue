@@ -195,8 +195,9 @@
                       E-mail: {{ email }} <br />
                       ที่อยู่: {{ add }} ตำบล {{ sub_district }} อำเภอ
                       {{ district }} จังหวัด {{ province }} <br />
+                      จำนวน {{ costumers }} คน <br />
                       ตั้งแต่วันที่ {{ datein }} ถึงวันที่ {{ dateout }}<br />
-                      จำนวน {{ costumers }} คน
+                      จำนวน {{ day }} วัน
                     </h4></v-card-text
                   >
 
@@ -258,7 +259,18 @@ export default {
         (v) => /.+@.+/.test(v) || 'E-mail must be valid',
       ],
       valid: true,
+      sum: '',
     }
+  },
+  computed: {
+    day() {
+      const dateIn = new Date(this.datein)
+      const dateOut = new Date(this.dateout)
+      const age = Math.abs(
+        Math.floor((dateOut - dateIn) / (24 * 60 * 60 * 1000)) + 1
+      )
+      return age
+    },
   },
   methods: {
     reset() {
@@ -268,6 +280,9 @@ export default {
       this.$refs.form.validate()
     },
     set() {
+      const day = Math.abs(this.datein, this.dateout)
+      this.sum = day / (1000 * 60 * 60)
+      console.log('DAY ' + this.day)
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
       const data = {
         No: this.id,
@@ -275,7 +290,7 @@ export default {
         email: this.email,
         costumers: this.costumers,
         phone: this.phone,
-        cost: this.cost,
+        cost: this.cost * this.day,
         address:
           this.add +
           ' ต.' +
@@ -284,9 +299,9 @@ export default {
           this.district +
           ' จ.' +
           this.province,
-
         date_in: this.datein,
         date_out: this.dateout,
+        day: this.day,
         state: 'wait check in',
       }
       db.collection('data')

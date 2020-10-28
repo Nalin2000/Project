@@ -4,12 +4,11 @@
   <v-container>
     <v-row
       ><v-col v-for="(i, index) in list" :key="index" cols="3"
-        ><nuxt-link :to="{ name: page(index), params: { id: i } }"
+        ><nuxt-link
+          :to="{ name: page(index), params: { id: i } }"
+          class="text-decoration-none"
           ><v-card class="btn-room text-center" :color="state(index)">
-            <div v-if="i.roomNo">
-              <br /><b> ROOM {{ i.roomNo }}</b>
-            </div>
-            <br />{{ i.state }}</v-card
+            <br /><b> ROOM {{ i.roomNo }}</b> <br />{{ i.state }}</v-card
           ></nuxt-link
         >
       </v-col></v-row
@@ -42,9 +41,7 @@ export default {
         })
     },
     page(index) {
-      if (this.list[index].state === 'wait check in') {
-        return 'room'
-      } else if (this.list[index].state === 'available') {
+      if (this.list[index].state === 'available') {
         return 'jong-form'
       }
     },
@@ -69,5 +66,8 @@ export default {
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
+}
+.under {
+  text-decoration: none;
 }
 </style>

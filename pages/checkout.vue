@@ -83,23 +83,6 @@ export default {
         this.list = data
       })
     },
-    // set() {
-    //   // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
-    //   const data = {
-    //     // eslint-disable-next-line no-undef
-    //     index: this.list.indexOf((x) => x.id === id),
-    //     list: this.list.splice(this.index, 1),
-    //   }
-    //   db.collection('checkout')
-    //     .doc()
-    //     .set(data)
-    //     .then(function () {
-    //       console.log('checkout')
-    //     })
-    //     .catch(function (error) {
-    //       console.error('Error writing document: ', error)
-    //     })
-    // },
   },
 }
 </script>

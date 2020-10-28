@@ -19,41 +19,8 @@
         :items-per-page="5"
         class="elevation-3"
       >
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>รายการจอง</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
-            <v-dialog v-model="cashDialog" max-width="500px">
-              <v-card>
-                <v-card-title class="headline">ทำรายการชำระเงิน</v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="cashDialog = !cashDialog"
-                    >Cancel</v-btn
-                  >
-                  <nuxt-link
-                    :to="{
-                      name: 'jong-cash',
-                      params: { id: list[editedIndex] },
-                    }"
-                    class="text-decoration-none"
-                  >
-                    <v-btn color="blue darken-1" text @click="Confirm, GetDays"
-                      >OK</v-btn
-                    ></nuxt-link
-                  >
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
-        </template>
         <template v-slot:item.actions="{ item }"
-          ><v-btn color="#FFF176" @click="cash(item)">Checkin</v-btn>
+          ><v-btn color="#FFF176" @click="set(item)">Checkin</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -66,7 +33,7 @@ export default {
   data() {
     return {
       search: '',
-      cashDialog: false,
+      // state: 'checkin',
       list: [],
       headers: [
         {
@@ -140,13 +107,6 @@ export default {
     this.getdata()
   },
   methods: {
-    // GetDays() {
-    //   const dropdt = new Date(document.getElementById(this.date_in).value)
-    //   const pickdt = new Date(document.getElementById(this.date_out).value)
-    //   return parseInt((dropdt - pickdt) / (24 * 3600 * 1000))
-    //   // eslint-disable-next-line no-unreachable
-    //   console.log('Date : ')
-    // },
     getdata() {
       db.collection('data')
         .orderBy('No', 'asc')
@@ -160,20 +120,37 @@ export default {
           console.log('List = ' + this.list)
         })
     },
-    cash(item) {
+    set(item) {
       this.editedIndex = this.list.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.cashDialog = true
-    },
-    Confirm() {
-      this.$router.replace('/room')
-    },
-    close() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+      // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
+      if (this.editedIndex > -1) {
+        this.id = this.list[this.editedIndex].No
+        console.log('id: ' + this.id)
+        Object.assign(this.list[this.editedIndex], this.editedItem)
+        this.arr = this.list[this.editedIndex]
+      } else {
+        this.list.push(this.editedItem)
+      }
+      db.collection('checkin')
+        .doc(this.id)
+        .get()
+        .then((doc) => {
+          const id = this.id
+          const obj = this.arr
+          console.log('di = ' + id)
+          console.log('Arr = ' + obj)
+          db.collection('checkin')
+            .doc(id)
+            .set(obj)
+            .then(function () {
+              db.collection('data').doc(id).delete()
+            })
+          const update = db.collection('room').doc(id)
+          return update.update({ state: 'check in' }).then(function () {
+            console.log('Update!' + id)
+          })
+        })
     },
   },
 }

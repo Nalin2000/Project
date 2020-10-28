@@ -72,11 +72,6 @@ export default {
           title: 'การจอง',
           to: '/room',
         },
-        // {
-        //   icon: 'mdi-view-list',
-        //   title: 'วันที่',
-        //   to: '/date',
-        // },
         {
           icon: 'mdi-view-list',
           title: 'รายการจอง',
