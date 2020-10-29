@@ -19,7 +19,7 @@
         :items-per-page="5"
         class="elevation-3"
         ><template v-slot:item.actions="{ item }"
-          ><v-btn color="#E57373" @click="set(item)">Checkout</v-btn>
+          ><v-btn color="#E57373" @click="set(item)">Check out</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -126,6 +126,7 @@ export default {
         .doc(this.id)
         .get()
         .then((doc) => {
+          alert('Checkout!')
           const id = this.id
           const obj = this.arr
           console.log('di = ' + id)

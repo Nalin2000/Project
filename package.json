@@ -11,6 +11,7 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
+    "@mdi/font": "^5.8.55",
     "@nuxtjs/axios": "^5.12.2",
     "core-js": "^3.6.5",
     "firebase": "^7.23.0",

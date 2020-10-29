@@ -1,19 +1,23 @@
 /* eslint-disable vue/valid-v-bind */ /* eslint-disable prettier/prettier */
 <template>
-  <!-- <v-parallax class="bg" jumbotron src="/bg.jpg"> -->
   <v-container>
     <v-row
-      ><v-col v-for="(i, index) in list" :key="index" cols="3"
-        ><nuxt-link
+      ><v-col v-for="(i, index) in list" :key="index" cols="3">
+        <nuxt-link
           :to="{ name: page(index), params: { id: i } }"
           class="text-decoration-none"
-          ><v-card class="btn-room text-center" :color="state(index)">
-            <br /><b> ROOM {{ i.roomNo }}</b> <br />{{ i.state }}</v-card
-          ></nuxt-link
         >
-      </v-col></v-row
-    ></v-container
-  >
+          <v-hover>
+            <template v-slot:default="{ hover }"
+              ><v-card class="btn-room text-center" :color="state(index)">
+                <br /><b> ROOM {{ i.roomNo }}</b> <br />{{ i.state
+                }}<v-fade-transition>
+                  <v-overlay v-if="hover" absolute color="#000000"> </v-overlay>
+                </v-fade-transition>
+              </v-card>
+            </template> </v-hover
+        ></nuxt-link> </v-col></v-row
+  ></v-container>
   <!-- </v-parallax
   > -->
 </template>

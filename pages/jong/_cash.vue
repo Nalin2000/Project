@@ -26,7 +26,7 @@
               วันที่เช็คอิน : {{ datein }} &emsp; วันที่เช็คเอาท์ :
               {{ dateout }}
               <br class="mb-4" />
-              จำนวนวันที่พัก ราคา 890 (บาท/คืน)
+              จำนวน {{ day }} วัน &emsp; ราคา 890 (บาท/คืน)
               <br />
 
               <v-divider inset class="mt-5 mb-5"></v-divider>
@@ -35,10 +35,7 @@
               <br />
             </div>
 
-            <v-btn
-              class="mt-6 float-right"
-              color="primary"
-              @click="set(), reset()"
+            <v-btn class="mt-6 float-right" color="primary" @click="set()"
               >ชำระเงิน</v-btn
             >
           </v-col>
@@ -61,13 +58,11 @@ export default {
       cost: this.$route.params.id.cost,
       datein: this.$route.params.id.date_in,
       dateout: this.$route.params.id.date_out,
+      day: this.$route.params.id.day,
       address: this.$route.params.id.address,
     }
   },
   methods: {
-    reset() {
-      this.$router.replace('/booking')
-    },
     set() {
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
       const data = {
@@ -88,8 +83,10 @@ export default {
           const id = this.id
           db.collection('data').doc(id).delete()
           const update = db.collection('room').doc(id)
-          return update.update({ state: 'check in' }).then(function () {
+          return update.update({ state: 'check in' }).then(() => {
             console.log('Update!' + id)
+            alert('ชำระเงินสำเร็จ!')
+            this.$router.replace('/booking')
           })
         })
     },

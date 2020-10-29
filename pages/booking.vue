@@ -24,16 +24,21 @@
             <v-toolbar-title>รายการจอง</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="cashDialog" max-width="500px">
+            <v-dialog v-model="cashDialog" max-width="400">
               <v-card>
-                <v-card-title class="headline">ทำรายการชำระเงิน</v-card-title>
+                <v-card-title class="headline grey lighten-2"
+                  >Check in</v-card-title
+                >
+                <v-card-text class="text-center headline" justify="center"
+                  >ทำการชำระเงิน</v-card-text
+                >
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
                     color="blue darken-1"
                     text
                     @click="cashDialog = !cashDialog"
-                    >Cancel</v-btn
+                    >ยกเลิก</v-btn
                   >
                   <nuxt-link
                     :to="{
@@ -42,8 +47,8 @@
                     }"
                     class="text-decoration-none"
                   >
-                    <v-btn color="blue darken-1" text @click="Confirm, GetDays"
-                      >OK</v-btn
+                    <v-btn color="blue darken-1" text @click="Confirm"
+                      >ยืนยัน</v-btn
                     ></nuxt-link
                   >
                   <v-spacer></v-spacer>
@@ -53,7 +58,7 @@
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }"
-          ><v-btn color="#FFF176" @click="cash(item)">Checkin</v-btn>
+          ><v-btn color="#FFF176" @click="cash(item)">Check in</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -140,13 +145,6 @@ export default {
     this.getdata()
   },
   methods: {
-    // GetDays() {
-    //   const dropdt = new Date(document.getElementById(this.date_in).value)
-    //   const pickdt = new Date(document.getElementById(this.date_out).value)
-    //   return parseInt((dropdt - pickdt) / (24 * 3600 * 1000))
-    //   // eslint-disable-next-line no-unreachable
-    //   console.log('Date : ')
-    // },
     getdata() {
       db.collection('data')
         .orderBy('No', 'asc')
