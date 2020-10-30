@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 <template>
   <div>
-    <v-card color="#26c6da">
+    <v-card>
       <v-card-title>
         <v-spacer></v-spacer>
         <v-text-field
@@ -18,8 +18,16 @@
         :items="list"
         :items-per-page="5"
         class="elevation-3"
-        ><template v-slot:item.actions="{ item }"
-          ><v-btn color="#E57373" @click="set(item)">Check out</v-btn>
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>รายการเช็คอิน</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.actions="{ item }"
+          ><v-btn color="error" @click="set(item)"><h5>Check out</h5></v-btn>
         </template>
       </v-data-table>
     </v-card>

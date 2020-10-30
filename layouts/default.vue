@@ -1,19 +1,19 @@
 <template>
-  <v-app dark light>
+  <v-app light>
     <v-navigation-drawer
       v-model="drawer"
-      class="sky"
+      color="#447695"
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
       app
       ><template v-slot:prepend>
         <v-list-item two-line>
-          <v-list-item-avatar color="bl" size="37">
-            <img src="/avatar.png" />
+          <v-list-item-avatar color="mainS" size="37">
+            <img src="/woman.png" />
           </v-list-item-avatar>
 
-          <v-list-item-content class="black--text">
+          <v-list-item-content class="buttonS--text">
             <v-list-item-title>Jane Smith</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -24,7 +24,7 @@
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
-          class="primary--text"
+          class="bl--text"
           :to="item.to"
           router
           exact
@@ -38,20 +38,22 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app class="foot white--text">
+    <v-app-bar :clipped-left="clipped" fixed app class="banner white--text">
       <v-icon class="white--text mr-1">mdi-anchor</v-icon>
       <v-toolbar-title v-text="title" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+        <v-icon class="gray--text"
+          >mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon
+        >
       </v-btn>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon class="gray--text" @click.stop="drawer = !drawer" />
       <v-spacer />
-      <v-btn class="red--text" color="#CFD8DC" @click="logout()">Log out</v-btn>
+      <v-btn class="buttonS" color="banner" @click="logout()">Log out</v-btn>
     </v-app-bar>
-    <v-main class="lightblue">
+    <v-main class="mainS">
       <nuxt />
     </v-main>
-    <v-footer class="foot white--text" :absolute="!fixed" app>
+    <v-footer class="foot banner--text" :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>

@@ -51,11 +51,11 @@ export default {
     },
     state(index) {
       if (this.list[index].state === 'wait check in') {
-        return '#FFC107'
+        return '#eebd6b'
       } else if (this.list[index].state === 'available') {
-        return '#00C853'
+        return '#57BDA2'
       } else {
-        return '#FF3D00'
+        return '#d5d1ca'
       }
     },
   },

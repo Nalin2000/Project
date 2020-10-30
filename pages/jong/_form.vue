@@ -6,7 +6,7 @@
 
     <v-card
       class="mx-auto mb-6 mt-3 pa-6"
-      color="#B0BEC5"
+      color="#CB9F94"
       max-width="900"
       elevation="15"
     >
@@ -172,7 +172,8 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     depressed
-                    color="primary"
+                    color="#712E1E"
+                    class="white--text"
                     :disabled="!valid"
                     v-bind="attrs"
                     v-on="on"

@@ -1,6 +1,6 @@
 <template>
   <div class="login100">
-    <v-card class="wrap-login100">
+    <v-card class="wrap-login100" color="rgba(255, 255, 255, 0.75)">
       <v-row class="center"
         ><v-col cols="6"></v-col>
         <v-col cols="6">
@@ -34,14 +34,16 @@
                     @click:append="show2 = !show2"
                   ></v-text-field></v-col
               ></v-row>
-              <v-btn
-                rounded
-                color="#4FC3F7"
-                class="container-btn"
-                @click="login()"
+              <v-hover>
+                <v-btn
+                  rounded
+                  class="container-btn"
+                  color="#DCB13C"
+                  @click="login()"
+                >
+                  SIGN IN
+                </v-btn></v-hover
               >
-                SIGN IN
-              </v-btn>
             </v-form></v-container
           >
         </v-col></v-row
@@ -101,17 +103,14 @@ export default {
   },
 }
 </script>
-<style scope>
+<style>
 .container-btn {
   width: 100%;
   display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 .logtitle {
   color: #333333;
@@ -123,10 +122,8 @@ export default {
 }
 .wrap-login100 {
   width: 960px;
-  background: rgba(255, 255, 255, 0.774);
   border-radius: 20px;
   overflow: hidden;
-
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -148,9 +145,9 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: -webkit-linear-gradient(-135deg, #f5f7e2, #76fff4);
-  background: -o-linear-gradient(-135deg, #f5f7e2, #76fff4);
-  background: -moz-linear-gradient(-135deg, #f5f7e2, #76fff4);
-  background: linear-gradient(-135deg, #f5f7e2, #76fff4);
+  background: -webkit-linear-gradient(-135deg, #d5d1ca, #01bcc6);
+  background: -o-linear-gradient(-135deg, #d5d1ca, #01bcc6);
+  background: -moz-linear-gradient(-135deg, #efefee, #008eab);
+  background: linear-gradient(-135deg, #efefee, #008eab);
 }
 </style>

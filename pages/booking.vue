@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 <template>
   <div>
-    <v-card color="#26c6da">
+    <v-card>
       <v-card-title>
         <v-spacer></v-spacer>
         <v-text-field
@@ -55,10 +55,43 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+            <v-dialog v-model="cancelDialog" max-width="400">
+              <v-card>
+                <v-card-title class="headline grey lighten-2"
+                  >Check in</v-card-title
+                >
+                <v-card-text class="text-center headline" justify="center"
+                  >ยกเลิกการจอง</v-card-text
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="cancelDialog = !cancelDialog"
+                    >ยกเลิก</v-btn
+                  >
+                  <v-btn color="blue darken-1" text @click="CancelConfirm"
+                    >ยืนยัน</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-toolbar>
         </template>
         <template v-slot:item.actions="{ item }"
-          ><v-btn color="#FFF176" @click="cash(item)">Check in</v-btn>
+          ><v-row
+            ><v-col cols="6"
+              ><v-btn color="error" max-width="20" @click="cancel(item)"
+                ><h6>Cancel</h6></v-btn
+              ></v-col
+            ><v-col cols="6"
+              ><v-btn color="primary" max-width="20" @click="cash(item)"
+                ><h6>Check in</h6></v-btn
+              ></v-col
+            ></v-row
+          >
         </template>
       </v-data-table>
     </v-card>
@@ -71,6 +104,7 @@ export default {
   data() {
     return {
       search: '',
+      cancelDialog: false,
       cashDialog: false,
       list: [],
       headers: [
@@ -130,7 +164,6 @@ export default {
         address: '',
         date_in: '',
         date_out: '',
-        state: 'check in',
       },
     }
   },
@@ -166,12 +199,40 @@ export default {
     Confirm() {
       this.$router.replace('/room')
     },
+
     close() {
-      this.dialogDelete = false
+      this.cashDialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
+    },
+    Cenclose() {
+      this.cancelDialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+    cancel(item) {
+      this.editedIndex = this.list.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.cancelDialog = true
+    },
+    CancelConfirm() {
+      const id = this.list[this.editedIndex].No
+      this.list.splice(this.editedIndex, 1)
+      db.collection('data')
+        .doc(id)
+        .delete()
+        .then(() => {
+          this.Cenclose()
+          const update = db.collection('room').doc(id)
+          return update.update({ state: 'available' }).then(() => {
+            console.log('Update!' + id)
+            this.$router.replace('/booking')
+          })
+        })
     },
   },
 }

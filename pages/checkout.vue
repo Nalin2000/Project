@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 <template>
   <div>
-    <v-card color="#26c6da">
+    <v-card>
       <v-card-title>
         <v-spacer></v-spacer>
         <v-text-field
@@ -16,9 +16,16 @@
         :search="search"
         :headers="headers"
         :items="list"
-        :items-per-page="5"
+        :items-per-page="10"
         class="elevation-3"
       >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>รายชื่อผู้ที่เคยเข้าพัก</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+        </template>
       </v-data-table>
     </v-card>
   </div>
