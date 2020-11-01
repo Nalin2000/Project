@@ -2,7 +2,7 @@
   <div class="login100">
     <v-card class="wrap-login100" color="rgba(255, 255, 255, 0.75)">
       <v-row class="center"
-        ><v-col cols="6"></v-col>
+        ><v-col cols="6"><v-img src="/lynnhotel.png"></v-img></v-col>
         <v-col cols="6">
           <v-container>
             <v-form>
