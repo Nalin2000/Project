@@ -173,7 +173,7 @@
               v-model="costumers"
               :rules="nameRules"
               :items="kon"
-              prepend-icon="mdi-home-outline"
+              prepend-icon="mdi-account-circle-outline"
               label="จำนวนคน"
               required
             ></v-select>

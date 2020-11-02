@@ -86,7 +86,7 @@ export default {
         },
         {
           icon: 'mdi-playlist-remove',
-          title: 'check out',
+          title: 'รายชื่อผู้ที่เคยเข้าพัก',
           to: '/checkout',
         },
       ],

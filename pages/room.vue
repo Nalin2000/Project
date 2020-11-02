@@ -49,7 +49,7 @@ export default {
         return 'jong-form'
       } else if (this.list[index].state === 'wait check in') {
         return 'booking'
-      } else if (this.list[index].state === 'check in') {
+      } else if (this.list[index].state === 'staying') {
         return 'checkin'
       }
     },

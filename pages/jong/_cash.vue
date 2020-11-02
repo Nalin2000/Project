@@ -84,7 +84,7 @@ export default {
           const id = this.id
           db.collection('data').doc(id).delete()
           const update = db.collection('room').doc(id)
-          return update.update({ state: 'check in' }).then(() => {
+          return update.update({ state: 'staying' }).then(() => {
             console.log('Update!' + id)
             alert('ชำระเงินสำเร็จ!')
             this.$router.replace('/booking')
