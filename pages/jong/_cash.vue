@@ -23,6 +23,7 @@
           <v-col cols="6"
             ><h2 class="font-weight-medium">การชำระเงิน</h2>
             <div class="font">
+              ลักษณะห้อง 1 เตียงคิงไซส์ <br />
               วันที่เช็คอิน : {{ datein }} &emsp; วันที่เช็คเอาท์ :
               {{ dateout }}
               <br class="mb-4" />

@@ -47,6 +47,10 @@ export default {
     page(index) {
       if (this.list[index].state === 'available') {
         return 'jong-form'
+      } else if (this.list[index].state === 'wait check in') {
+        return 'booking'
+      } else if (this.list[index].state === 'check in') {
+        return 'checkin'
       }
     },
     state(index) {

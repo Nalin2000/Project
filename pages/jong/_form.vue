@@ -12,16 +12,71 @@
     >
       <h3>รายละเอียดลูกค้า</h3>
       <v-form ref="form" v-model="valid" lazy-validation>
+        <v-text-field
+          v-model="name"
+          :rules="nameRules"
+          label="ชื่อ-นามสกุล"
+          required
+        ></v-text-field>
+
         <v-row>
-          <v-col cols="7">
-            <v-text-field
-              v-model="name"
+          <v-col cols="6">
+            ที่อยู่
+            <v-textarea
+              v-model="add"
               :rules="nameRules"
-              label="ชื่อ-นามสกุล"
+              label="ที่อยู่"
+              solo
+              class="mt-1"
+              placeholder="ที่อยู่"
+              name="input-7-4"
               required
-            ></v-text-field>
+            ></v-textarea>
           </v-col>
-          <v-col cols="5">
+          <v-col cols="6">
+            <v-row
+              ><v-col cols="6"
+                ><ThailandAutoComplete
+                  v-model="district"
+                  type="district"
+                  label="ตำบล/แขวง"
+                  color="#42b883"
+                  size="default"
+                  placeholder="ตำบล"
+                  @select="select" /></v-col
+              ><v-col cols="6">
+                <ThailandAutoComplete
+                  v-model="amphoe"
+                  type="amphoe"
+                  label="อำเภอ"
+                  size="default"
+                  placeholder="อำเภอ"
+                  @select="select" /></v-col
+            ></v-row>
+            <v-row
+              ><v-col cols="6">
+                <ThailandAutoComplete
+                  v-model="province"
+                  type="province"
+                  label="จังหวัด"
+                  size="default"
+                  color="#35495e"
+                  placeholder="จังหวัด"
+                  @select="select" /></v-col
+              ><v-col cols="6"
+                >รหัสไปรษณีย์<ThailandAutoComplete
+                  v-model="zipcode"
+                  class="mt-2"
+                  type="zipcode"
+                  size="default"
+                  color="#00a4e4"
+                  placeholder="รหัสไปรษณีย์..."
+                  @select="select" /></v-col
+            ></v-row> </v-col
+        ></v-row>
+
+        <v-row>
+          <v-col cols="6">
             <v-text-field
               v-model="phone"
               :rules="nameRules"
@@ -32,53 +87,15 @@
               icon="mdi-cellphone"
             </v-text-field>
           </v-col>
-        </v-row>
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          prepend-icon="mdi-email"
-          required
-        ></v-text-field>
-        <v-row>
           <v-col cols="6">
             <v-text-field
-              v-model="add"
-              :rules="nameRules"
-              name="input-7-1"
-              label="ที่อยู่"
+              v-model="email"
+              :rules="emailRules"
+              label="E-mail"
+              prepend-icon="mdi-email"
               required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              v-model="sub_district"
-              :rules="nameRules"
-              name="input-7-1"
-              label="ตำบล/แขวง"
-              required
-            ></v-text-field> </v-col
+            ></v-text-field></v-col
         ></v-row>
-        <v-row
-          ><v-col cols="6">
-            <v-text-field
-              v-model="district"
-              :rules="nameRules"
-              name="input-7-1"
-              label="อำเภอ/เขต"
-              required
-            ></v-text-field
-          ></v-col>
-          <v-col cols="6">
-            <v-text-field
-              v-model="province"
-              :rules="nameRules"
-              name="input-7-1"
-              label="จังหวัด"
-              required
-            ></v-text-field>
-          </v-col>
-        </v-row>
 
         <v-divider></v-divider>
         <h3>รายละเอียดการจอง</h3>
@@ -194,8 +211,9 @@
                       ชื่อ: {{ name }} <br />
                       เบอร์โทร: {{ phone }} <br />
                       E-mail: {{ email }} <br />
-                      ที่อยู่: {{ add }} ตำบล {{ sub_district }} อำเภอ
-                      {{ district }} จังหวัด {{ province }} <br />
+                      ที่อยู่: {{ add }} ตำบล {{ district }} อำเภอ
+                      {{ amphoe }} จังหวัด {{ province }} รหัสไปรษณีย์
+                      {{ zipcode }}<br />
                       จำนวน {{ costumers }} คน <br />
                       ตั้งแต่วันที่ {{ datein }} ถึงวันที่ {{ dateout }}<br />
                       จำนวน {{ day }} วัน
@@ -228,10 +246,14 @@
 </template>
 <script>
 // eslint-disable-next-line no-unused-vars
-import firebase from 'firebase/app'
+import ThailandAutoComplete from 'vue-thailand-address-autocomplete'
+// import firebase from 'firebase/app'
 import { db } from '~/plugins/firebaseConfig.js'
 // import { AutoProvince } from '~/plugins/AutoProvince'
 export default {
+  components: {
+    ThailandAutoComplete,
+  },
   data() {
     return {
       id: this.$route.params.id.roomNo,
@@ -248,11 +270,12 @@ export default {
       dateout: '',
       menu1: false,
       menu2: false,
-      sub_district: '',
       district: '',
+      amphoe: '',
+      province: '',
+      zipcode: '',
       cost: this.$route.params.id.cost,
       // state: 'wait check in',
-      province: '',
       dialog: false,
       nameRules: [(v) => !!v || 'please required'],
       emailRules: [
@@ -280,6 +303,12 @@ export default {
     validate() {
       this.$refs.form.validate()
     },
+    select(address) {
+      this.district = address.district
+      this.amphoe = address.amphoe
+      this.province = address.province
+      this.zipcode = address.zipcode
+    },
     set() {
       const day = Math.abs(this.datein, this.dateout)
       this.sum = day / (1000 * 60 * 60)
@@ -295,11 +324,13 @@ export default {
         address:
           this.add +
           ' ต.' +
-          this.sub_district +
-          ' อ.' +
           this.district +
+          ' อ.' +
+          this.amphoe +
           ' จ.' +
-          this.province,
+          this.province +
+          ' รหัสไปรษณีย์ ' +
+          this.zipcode,
         date_in: this.datein,
         date_out: this.dateout,
         day: this.day,
@@ -325,3 +356,8 @@ export default {
   },
 }
 </script>
+<style>
+.box {
+  background-color: rgb(255, 255, 255);
+}
+</style>
